@@ -1,44 +1,99 @@
 import { Link } from "react-router-dom";
+import { FaInstagram, FaTiktok } from "react-icons/fa6";
+
+const QUICK_LINKS = [
+  ["/", "Home"],
+  ["/fleet", "Fleet"],
+  ["/about", "About"],
+  ["/blog", "Blog"],
+  ["/contact", "Contact"],
+];
 
 export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-border bg-card">
-      <div className="mx-auto flex max-w-6xl flex-col gap-6 px-6 py-10 md:flex-row md:items-start md:justify-between">
+    <footer className="bg-[#0c1001] text-muted-foreground">
+      <div className="mx-auto grid max-w-[1280px] grid-cols-1 gap-[clamp(30px,4vw,56px)] px-[clamp(18px,4vw,56px)] pt-16 pb-[30px] text-center md:grid-cols-[1.3fr_1.4fr_0.8fr] md:text-left">
+        {/* Column 1: brand, description, contact, socials */}
         <div>
-          <img src="/images/RENTAFLEETLOGO.svg" alt="RentAFleet" className="h-8 w-auto" />
-          <p className="mt-3 max-w-xs text-sm text-muted-foreground">
+          <img
+            src="/images/RENTAFLEETLOGO.svg"
+            alt="RentAFleet"
+            className="mx-auto mb-[22px] h-12 w-auto md:mx-0"
+          />
+          <p className="mx-auto max-w-xs text-sm text-muted-foreground md:mx-0">
             Premium vehicles, hosted on Turo. Book your next ride with RentAFleet.
           </p>
+          <a
+            href="mailto:turo@rentafleet.host"
+            className="mt-2 inline-block text-[13.5px] text-muted-foreground hover:text-foreground"
+          >
+            turo@rentafleet.host
+          </a>
+          <div className="mt-5 flex justify-center gap-[18px] md:justify-start">
+            <a
+              href="https://www.instagram.com/renta_fleet"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="RentAFleet on Instagram"
+              className="text-muted-foreground transition-colors hover:text-primary"
+            >
+              <FaInstagram aria-hidden="true" size={22} />
+            </a>
+            <a
+              href="https://www.tiktok.com/@renta_fleet"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="RentAFleet on TikTok"
+              className="text-muted-foreground transition-colors hover:text-primary"
+            >
+              <FaTiktok aria-hidden="true" size={20} />
+            </a>
+          </div>
         </div>
 
-        <div className="flex gap-12">
-          <div>
-            <h3 className="mb-3 text-sm font-heading">Site</h3>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li><Link to="/" className="hover:text-primary">Home</Link></li>
-              <li><Link to="/fleet" className="hover:text-primary">Fleet</Link></li>
-              <li><Link to="/about" className="hover:text-primary">About</Link></li>
-              <li><Link to="/blog" className="hover:text-primary">Blog</Link></li>
-              <li><Link to="/contact" className="hover:text-primary">Contact</Link></li>
-            </ul>
-          </div>
-          <div>
-            <h3 className="mb-3 text-sm font-heading">Book</h3>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>
-                <a href="https://turo.com" target="_blank" rel="noreferrer" className="hover:text-primary">
-                  Our Turo Page
-                </a>
-              </li>
-            </ul>
-          </div>
+        {/* Column 2: reserved for future service-area coverage */}
+        <div />
+
+        {/* Column 3: quick links */}
+        <div className="flex flex-col items-center md:items-start">
+          <h3 className="mb-4 w-full border-b border-white/[0.16] pb-3 font-heading text-[11.5px] font-semibold uppercase tracking-[0.2em] text-primary">
+            Quick Links
+          </h3>
+          {QUICK_LINKS.map(([to, label]) => (
+            <Link
+              key={to}
+              to={to}
+              className="py-[5.5px] font-heading text-[13.5px] font-medium uppercase tracking-[0.06em] text-muted-foreground hover:text-primary"
+            >
+              {label}
+            </Link>
+          ))}
+          <a
+            href="https://turo.com"
+            target="_blank"
+            rel="noreferrer"
+            className="py-[5.5px] font-heading text-[13.5px] font-medium uppercase tracking-[0.06em] text-muted-foreground hover:text-primary"
+          >
+            Our Turo Page
+          </a>
         </div>
       </div>
 
-      <div className="border-t border-border px-6 py-4 text-center text-xs text-muted-foreground">
-        &copy; {year} RentAFleet. All rights reserved.
+      <div className="mx-auto flex max-w-[1280px] flex-wrap justify-center gap-4 border-t border-white/[0.14] px-[clamp(18px,4vw,56px)] py-4 text-center text-[11.5px] text-muted-foreground md:justify-between md:text-left">
+        <span>&copy; {year} RentAFleet. All rights reserved.</span>
+        <span>
+          Charlotte, NC &middot; Icons by{" "}
+          <a
+            href="https://icons8.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-primary"
+          >
+            Icons8
+          </a>
+        </span>
       </div>
     </footer>
   );
