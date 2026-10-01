@@ -58,6 +58,23 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <section className="border-t border-border px-6 py-16">
+        <div className="mx-auto flex max-w-5xl flex-col gap-6 md:flex-row md:items-center md:justify-between">
+          <div>
+            <p className="font-heading text-sm uppercase tracking-[0.2em] text-primary">
+              The RentAFleet Journal
+            </p>
+            <h2 className="mt-2 text-2xl md:text-3xl">Stories from behind the wheel</h2>
+            <p className="mt-3 max-w-xl text-sm text-muted-foreground">
+              Meet the people and care behind every vehicle in the fleet.
+            </p>
+          </div>
+          <Button asChild variant="outline" size="lg">
+            <Link to="/blog">Read the Blog</Link>
+          </Button>
+        </div>
+      </section>
     </div>
   );
 }

@@ -4,6 +4,7 @@ const navLinks = [
   { to: "/", label: "Home" },
   { to: "/fleet", label: "Fleet" },
   { to: "/about", label: "About" },
+  { to: "/blog", label: "Blog" },
   { to: "/contact", label: "Contact" },
 ];
 
@@ -12,7 +13,7 @@ export default function Header() {
     <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
         <NavLink to="/" className="flex items-center gap-2">
-          <img src="/images/logo.svg" alt="RentAFleet" className="h-9 w-auto" />
+          <img src="/images/RENTAFLEETLOGO.svg" alt="RentAFleet" className="h-9 w-auto" />
         </NavLink>
 
         <nav className="hidden items-center gap-8 font-heading text-sm uppercase tracking-wide md:flex">
