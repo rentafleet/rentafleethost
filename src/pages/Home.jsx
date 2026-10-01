@@ -68,7 +68,7 @@ export default function Home() {
           aria-label="Scroll to how it works"
           title="Scroll to how it works"
           onClick={() => document.getElementById("how-it-works")?.scrollIntoView({ behavior: "smooth" })}
-          className="absolute bottom-6 left-1/2 z-20 flex size-12 -translate-x-1/2 items-center justify-center text-white/90 drop-shadow-[0_1px_5px_rgba(0,0,0,0.5)] transition-opacity hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white hero-scroll-cue"
+          className="absolute bottom-20 left-1/2 z-20 flex size-12 -translate-x-1/2 items-center justify-center text-white/90 drop-shadow-[0_1px_5px_rgba(0,0,0,0.5)] transition-opacity hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white hero-scroll-cue lg:bottom-6"
         >
           <ChevronDown aria-hidden="true" size={40} strokeWidth={2} />
         </button>

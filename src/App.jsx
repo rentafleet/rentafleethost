@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import MobileActionBar from "@/components/MobileActionBar";
 import Home from "@/pages/Home";
 import Fleet from "@/pages/Fleet";
 import About from "@/pages/About";
@@ -11,7 +12,7 @@ import BlogPost from "@/pages/BlogPost";
 function App() {
   return (
     <BrowserRouter>
-      <div className="flex min-h-screen flex-col">
+      <div className="flex min-h-screen flex-col pb-14 lg:pb-0">
         <Header />
         <main className="flex-1">
           <Routes>
@@ -24,6 +25,7 @@ function App() {
           </Routes>
         </main>
         <Footer />
+        <MobileActionBar />
       </div>
     </BrowserRouter>
   );

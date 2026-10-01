@@ -19,14 +19,19 @@ export default function Header() {
     return () => window.removeEventListener("scroll", updateHeader);
   }, []);
 
+  // Transparent overlay header is desktop-only (≥1200px), matching the reference site; smaller screens get a solid bar always.
   const headerClass = isHome
-    ? `fixed inset-x-0 top-0 z-50 border-b-0 bg-transparent transition-shadow duration-300 ${isScrolled ? "shadow-[0_2px_18px_rgba(0,0,0,0.28)]" : "shadow-none"}`
+    ? `fixed inset-x-0 top-0 z-50 border-b-0 bg-background min-[1200px]:transition-shadow min-[1200px]:duration-300 ${
+        isScrolled
+          ? "min-[1200px]:bg-background min-[1200px]:shadow-[0_2px_18px_rgba(0,0,0,0.28)]"
+          : "min-[1200px]:bg-transparent min-[1200px]:shadow-none"
+      }`
     : "sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur";
 
   return (
     <header className={headerClass}>
       {isHome && (
-        <>
+        <div className="hidden min-[1200px]:block">
           <div
             aria-hidden="true"
             className={`pointer-events-none absolute inset-0 z-0 bg-gradient-to-b from-[#161a03]/60 to-transparent transition-opacity duration-300 ${isScrolled ? "opacity-0" : "opacity-100"}`}
@@ -35,7 +40,7 @@ export default function Header() {
             aria-hidden="true"
             className={`pointer-events-none absolute inset-0 z-0 bg-[#161a03] transition-opacity duration-300 ${isScrolled ? "opacity-100" : "opacity-0"}`}
           />
-        </>
+        </div>
       )}
       <div className="relative z-10 flex w-full items-center justify-between px-6 py-2 sm:py-4 md:px-8">
         <NavLink to="/" className="flex items-center gap-2">
