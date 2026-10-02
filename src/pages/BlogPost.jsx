@@ -7,7 +7,10 @@ import { sanityClient, sanityImage } from "@/lib/sanity";
 const postQuery = `*[_type == "post" && slug.current == $slug && defined(publishedAt) && publishedAt <= now()][0] {
   title,
   excerpt,
-  author,
+  "authorName": coalesce(authorProfile->name, author->name, author),
+  "authorBio": coalesce(authorProfile->bio, author->bio),
+  "authorImageUrl": coalesce(authorProfile->image.asset->url, author->image.asset->url),
+  "authorImageAlt": coalesce(authorProfile->image.alt, author->image.alt),
   publishedAt,
   coverImage,
   body
@@ -60,6 +63,26 @@ function formatDate(value) {
   return new Intl.DateTimeFormat("en-US", { dateStyle: "long" }).format(new Date(value));
 }
 
+function readMinutes(body = []) {
+  const text = body
+    .filter((block) => block._type === "block")
+    .flatMap((block) => block.children || [])
+    .map((child) => child.text || "")
+    .join(" ");
+  const words = text.trim().split(/\s+/).filter(Boolean).length;
+  return words ? Math.max(1, Math.ceil(words / 200)) : 0;
+}
+
+function authorInitials(name = "") {
+  return name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0])
+    .join("")
+    .toUpperCase();
+}
+
 export default function BlogPost() {
   const { slug } = useParams();
   const [post, setPost] = useState(null);
@@ -109,8 +132,10 @@ export default function BlogPost() {
       <header className="mx-auto max-w-3xl py-10">
         <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
           <time dateTime={post.publishedAt}>{formatDate(post.publishedAt)}</time>
-          {post.author && <span aria-hidden="true">·</span>}
-          {post.author && <span>{post.author}</span>}
+          {readMinutes(post.body) > 0 && <span aria-hidden="true">·</span>}
+          {readMinutes(post.body) > 0 && <span>{readMinutes(post.body)} min read</span>}
+          {post.authorName && <span aria-hidden="true">·</span>}
+          {post.authorName && <span>{post.authorName}</span>}
         </div>
         <h1 className="mt-4 text-4xl leading-tight md:text-5xl">{post.title}</h1>
         {post.excerpt && <p className="mt-5 text-lg text-muted-foreground">{post.excerpt}</p>}
@@ -125,6 +150,29 @@ export default function BlogPost() {
       <div className="mx-auto mt-10 max-w-3xl">
         <PortableText value={post.body || []} components={portableTextComponents} />
       </div>
+      {post.authorName && (
+        <aside className="mx-auto mt-14 flex max-w-3xl items-start gap-4 border-t border-border pt-8">
+          {post.authorImageUrl ? (
+            <img
+              src={post.authorImageUrl}
+              alt={post.authorImageAlt || ""}
+              className="size-16 shrink-0 rounded-full object-cover"
+            />
+          ) : (
+            <span
+              aria-hidden="true"
+              className="flex size-16 shrink-0 items-center justify-center rounded-full bg-secondary font-heading text-lg font-semibold text-primary"
+            >
+              {authorInitials(post.authorName)}
+            </span>
+          )}
+          <div>
+            <p className="font-heading text-xs uppercase tracking-[0.15em] text-primary">About the author</p>
+            <h2 className="mt-1 text-lg">{post.authorName}</h2>
+            {post.authorBio && <p className="mt-2 text-sm leading-6 text-muted-foreground">{post.authorBio}</p>}
+          </div>
+        </aside>
+      )}
     </article>
   );
 }

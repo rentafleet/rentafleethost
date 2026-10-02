@@ -27,9 +27,17 @@ export default defineType({
     }),
     defineField({
       name: 'author',
-      title: 'Author',
+      title: 'Legacy byline',
       type: 'string',
-      initialValue: 'RentAFleet',
+      initialValue: 'Renta Fleet',
+      hidden: true,
+    }),
+    defineField({
+      name: 'authorProfile',
+      title: 'Author',
+      type: 'reference',
+      to: [{type: 'author'}],
+      validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'publishedAt',

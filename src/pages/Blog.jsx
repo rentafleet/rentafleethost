@@ -8,13 +8,21 @@ const postsQuery = `*[_type == "post" && defined(publishedAt) && publishedAt <= 
   title,
   "slug": slug.current,
   excerpt,
-  author,
+  "authorName": coalesce(authorProfile->name, author->name, author),
+  "authorImageUrl": coalesce(authorProfile->image.asset->url, author->image.asset->url),
+  "authorImageAlt": coalesce(authorProfile->image.alt, author->image.alt),
+  "plain": pt::text(body),
   publishedAt,
   coverImage
 }`;
 
 function formatDate(value) {
   return new Intl.DateTimeFormat("en-US", { dateStyle: "long" }).format(new Date(value));
+}
+
+function readMinutes(text = "") {
+  const words = text.trim().split(/\s+/).filter(Boolean).length;
+  return words ? Math.max(1, Math.ceil(words / 200)) : 0;
 }
 
 export default function Blog() {
@@ -46,7 +54,7 @@ export default function Blog() {
     <section className="mx-auto max-w-6xl px-6 py-20">
       <div className="max-w-3xl">
         <p className="font-heading text-sm uppercase tracking-[0.2em] text-primary">
-          The RentAFleet Journal
+          The Renta Fleet Journal
         </p>
         <h1 className="mt-3 text-4xl md:text-5xl">Notes from the road</h1>
         <p className="mt-5 text-muted-foreground">
@@ -80,8 +88,21 @@ export default function Blog() {
                 )}
                 <div className="mt-5 flex items-center gap-2 text-xs text-muted-foreground">
                   <time dateTime={post.publishedAt}>{formatDate(post.publishedAt)}</time>
-                  {post.author && <span aria-hidden="true">·</span>}
-                  {post.author && <span>{post.author}</span>}
+                  {readMinutes(post.plain) > 0 && <span aria-hidden="true">·</span>}
+                  {readMinutes(post.plain) > 0 && <span>{readMinutes(post.plain)} min read</span>}
+                  {post.authorName && <span aria-hidden="true">·</span>}
+                  {post.authorName && (
+                    <span className="inline-flex items-center gap-2">
+                      {post.authorImageUrl && (
+                        <img
+                          src={post.authorImageUrl}
+                          alt={post.authorImageAlt || ""}
+                          className="size-6 rounded-full object-cover"
+                        />
+                      )}
+                      {post.authorName}
+                    </span>
+                  )}
                 </div>
                 <h2 className="mt-3 text-2xl transition-colors group-hover:text-primary">
                   {post.title}

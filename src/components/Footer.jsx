@@ -19,11 +19,11 @@ export default function Footer() {
         <div>
           <img
             src="/images/RENTAFLEETLOGO.svg"
-            alt="RentAFleet"
+            alt="Renta Fleet"
             className="mx-auto mb-[22px] h-12 w-auto md:mx-0"
           />
           <p className="mx-auto max-w-xs text-sm text-muted-foreground md:mx-0">
-            Premium vehicles, hosted on Turo. Book your next ride with RentAFleet.
+            Premium vehicles, hosted on Turo. Book your next ride with Renta Fleet.
           </p>
           <a
             href="mailto:turo@rentafleet.host"
@@ -36,7 +36,7 @@ export default function Footer() {
               href="https://www.instagram.com/renta_fleet"
               target="_blank"
               rel="noreferrer"
-              aria-label="RentAFleet on Instagram"
+              aria-label="Renta Fleet on Instagram"
               className="text-muted-foreground transition-colors hover:text-primary"
             >
               <FaInstagram aria-hidden="true" size={22} />
@@ -45,7 +45,7 @@ export default function Footer() {
               href="https://www.tiktok.com/@renta_fleet"
               target="_blank"
               rel="noreferrer"
-              aria-label="RentAFleet on TikTok"
+              aria-label="Renta Fleet on TikTok"
               className="text-muted-foreground transition-colors hover:text-primary"
             >
               <FaTiktok aria-hidden="true" size={20} />
@@ -82,7 +82,7 @@ export default function Footer() {
       </div>
 
       <div className="mx-auto flex max-w-[1280px] flex-wrap justify-center gap-4 border-t border-white/[0.14] px-[clamp(18px,4vw,56px)] py-4 text-center text-[11.5px] text-muted-foreground md:justify-between md:text-left">
-        <span>&copy; {year} RentAFleet. All rights reserved.</span>
+        <span>&copy; {year} Renta Fleet. All rights reserved.</span>
         <span>
           Charlotte, NC &middot; Icons by{" "}
           <a

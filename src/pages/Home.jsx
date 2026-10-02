@@ -111,7 +111,7 @@ export default function Home() {
         <div className="mx-auto flex max-w-5xl flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <div>
             <p className="font-heading text-sm uppercase tracking-[0.2em] text-[#8a7000]">
-              The RentAFleet Journal
+              The Renta Fleet Journal
             </p>
             <h2 className="mt-2 text-2xl text-[#161a03] md:text-3xl">Stories from behind the wheel</h2>
             <p className="mt-3 max-w-xl text-sm text-[#535649]">

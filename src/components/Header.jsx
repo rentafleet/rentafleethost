@@ -44,7 +44,7 @@ export default function Header() {
       )}
       <div className="relative z-10 flex w-full items-center justify-between px-6 py-2 sm:py-4 md:px-8">
         <NavLink to="/" className="flex items-center gap-2">
-          <img src="/images/RENTAFLEETLOGO.svg" alt="RentAFleet" className="h-[60px] w-auto" />
+          <img src="/images/RENTAFLEETLOGO.svg" alt="Renta Fleet" className="h-[60px] w-auto" />
         </NavLink>
 
         <nav className="hidden flex-1 items-center justify-center gap-6 font-heading text-[0.9375rem] font-medium uppercase tracking-[0.06em] md:flex md:gap-3 lg:gap-5 xl:gap-6">
