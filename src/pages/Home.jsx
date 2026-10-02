@@ -23,8 +23,7 @@ export default function Home() {
       <section className="relative flex min-h-svh items-center justify-center overflow-hidden bg-background px-6 py-16 text-center md:items-end md:py-0">
         <img
           src="/images/homepage.png"
-          alt=""
-          aria-hidden="true"
+          alt="Red Tesla parked in a Charlotte neighborhood"
           fetchPriority="high"
           className="absolute inset-0 z-0 h-full w-full object-cover object-center"
         />

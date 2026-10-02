@@ -29,11 +29,41 @@ const postsQuery = `*[_type == "post" && defined(slug.current) && defined(publis
 }`
 
 const staticRoutes = [
-  {path: '/', changefreq: 'weekly', priority: '1.0'},
-  {path: '/fleet/', changefreq: 'weekly', priority: '0.9'},
-  {path: '/about/', changefreq: 'yearly', priority: '0.6'},
-  {path: '/contact/', changefreq: 'yearly', priority: '0.6'},
-  {path: '/blog/', changefreq: 'weekly', priority: '0.8'},
+  {
+    path: '/',
+    title: 'Renta Fleet | Turo Car Rentals in the Charlotte Area',
+    description: 'Explore Turo car rentals in Charlotte, NC with Renta Fleet. Browse available vehicles, learn about pickup, and book your next drive online.',
+    changefreq: 'weekly',
+    priority: '1.0',
+  },
+  {
+    path: '/fleet/',
+    title: 'Turo Rental Cars in Charlotte | Renta Fleet',
+    description: 'Explore Renta Fleet vehicles available to rent through Turo in Charlotte. Browse the lineup, find a car for your trip, and check current availability.',
+    changefreq: 'weekly',
+    priority: '0.9',
+  },
+  {
+    path: '/about/',
+    title: 'About Renta Fleet | Charlotte Turo Host',
+    description: 'Meet Renta Fleet, a Charlotte-area Turo host with automotive industry experience and a growing selection of vehicles for local trips.',
+    changefreq: 'yearly',
+    priority: '0.6',
+  },
+  {
+    path: '/contact/',
+    title: 'Contact Renta Fleet | Charlotte Turo Rentals',
+    description: 'Contact Renta Fleet about Turo rentals or co-hosting in the Charlotte area. Email our team to discuss vehicles, trips, or working together.',
+    changefreq: 'yearly',
+    priority: '0.6',
+  },
+  {
+    path: '/blog/',
+    title: 'Renta Fleet Journal | Turo and Automotive Stories',
+    description: 'Read the Renta Fleet Journal for stories about our cars, Turo hosting, automotive care, and co-hosting in the Charlotte area.',
+    changefreq: 'weekly',
+    priority: '0.8',
+  },
 ]
 
 const escapeHtml = (value = '') => String(value).replace(/[&<>"']/g, (char) => ({
@@ -76,6 +106,20 @@ function renderPostBody(body) {
   return renderToStaticMarkup(h(PortableText, {value: body || [], components: portableTextComponents}))
 }
 
+function staticPageHtml(template, route) {
+  const canonical = `${siteUrl}${route.path}`
+  const metadata = [
+    `<meta name="description" content="${escapeHtml(route.description)}" />`,
+    `<link rel="canonical" href="${canonical}" />`,
+  ].join('\n    ')
+
+  return template
+    .replace(/<title>[^<]*<\/title>/, `<title>${escapeHtml(route.title)}</title>`)
+    .replace(/<meta name="description"[^>]*\/>/, '')
+    .replace(/<link rel="canonical"[^>]*\/>/, '')
+    .replace('</head>', `    ${metadata}\n  </head>`)
+}
+
 function articleHtml(template, post) {
   const canonical = `${siteUrl}/blog/${post.slug}/`
   const title = `${post.title} | Renta Fleet`
@@ -112,6 +156,7 @@ function articleHtml(template, post) {
   return template
     .replace(/<title>[^<]*<\/title>/, `<title>${escapeHtml(title)}</title>`)
     .replace(/<meta name="description"[^>]*\/>/, '')
+    .replace(/<link rel="canonical"[^>]*\/>/, '')
     .replace('</head>', `    ${metadata}\n  </head>`)
     .replace('<div id="root"></div>', `<div id="root">${main}</div>`)
 }
@@ -130,9 +175,24 @@ function sitemapXml(posts) {
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${entries.map((entry) => `  <url><loc>${escapeHtml(`${siteUrl}${entry.path}`)}</loc><lastmod>${escapeHtml(entry.lastmod)}</lastmod><changefreq>${entry.changefreq}</changefreq><priority>${entry.priority}</priority></url>`).join('\n')}\n</urlset>\n`
 }
 
-const posts = await client.fetch(postsQuery)
+let posts = []
+try {
+  posts = await client.fetch(postsQuery)
+} catch (error) {
+  console.warn('[seo] Could not fetch Sanity posts; generating static route metadata without article routes:', error.message)
+}
 const template = await readFile(join(dist, 'index.html'), 'utf8')
 await writeFile(join(dist, 'sitemap.xml'), sitemapXml(posts), 'utf8')
+
+for (const route of staticRoutes) {
+  if (route.path === '/') {
+    await writeFile(join(dist, 'index.html'), staticPageHtml(template, route), 'utf8')
+    continue
+  }
+  const outputPath = join(dist, route.path.replace(/^\//, ''), 'index.html')
+  await mkdir(dirname(outputPath), {recursive: true})
+  await writeFile(outputPath, staticPageHtml(template, route), 'utf8')
+}
 
 let prerendered = 0
 for (const post of posts) {
